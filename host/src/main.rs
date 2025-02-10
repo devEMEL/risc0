@@ -3,6 +3,7 @@
 use methods::{
     RISC0_HELLO_ELF, RISC0_HELLO_ID
 };
+use risc0_zkvm::serde::{from_slice, to_vec};
 use risc0_zkvm::{default_prover, ExecutorEnv};
 
 fn main() {
@@ -24,7 +25,8 @@ fn main() {
     // ExecutorEnvBuilder::build().
 
     // For example:
-    let input: u32 = 15 * u32::pow(2, 27) + 1;
+    // let input: u32 = 15 * u32::pow(2, 27) + 1;
+    let input = String::from("guys hello world, how is it going?");
     let env = ExecutorEnv::builder()
         .write(&input)
         .unwrap()
@@ -34,6 +36,7 @@ fn main() {
     // Obtain the default prover.
     let prover = default_prover();
 
+    
     // Proof information by proving the specified ELF binary.
     // This struct contains the receipt along with statistics about execution of the guest
     let prove_info = prover
@@ -53,4 +56,7 @@ fn main() {
     receipt
         .verify(RISC0_HELLO_ID)
         .unwrap();
+
+    let digest: Digest = from_slice(receipt.get_journal_vec().unwrap()).unwrap();
+    println!("We proved this hash came from a sentence containing hello world", digest);
 }
