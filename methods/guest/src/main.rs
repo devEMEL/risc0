@@ -1,4 +1,5 @@
-// #![no_main]
+#![no_main]
+#![no_std]
 
 
 use risc0_zkvm::guest::{env, sha};
