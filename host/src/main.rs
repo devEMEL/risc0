@@ -3,8 +3,8 @@
 use risc0_methods::{
     RISC0_ELF, RISC0_ID
 };
-use risc0_zkvm::serde::{from_slice, to_vec};
 use risc0_zkvm::{default_prover, ExecutorEnv};
+use risc0_zkvm::Receipt;
 
 fn main() {
 
