@@ -1,18 +1,3 @@
-// use risc0_zkvm::guest::env;
-
-// fn main() {
-//     // TODO: Implement your guest code here
-
-//     // read the input
-//     let input: u32 = env::read();
-
-//     // TODO: do something with the input
-
-//     // write public output to the journal
-//     env::commit(&input);
-// }
-
-
 // #![no_main]
 
 
@@ -20,21 +5,15 @@ use risc0_zkvm::guest::{env, sha};
 risc0_zkvm::guest::entry!(main);
 
 pub fn main() {
-    // TODO: Implement your guest code here
-
-    // Read input
-    let sentence: String = env::read();
-
-    let mut is_okay = false;
-    if sentence.contains("hello world") {
-        is_okay = true;
-    } else {
-        is_okay = false;
+    // Load the first number from the host
+    let a: u64 = env::read();
+    // Load the second number from the host
+    let b: u64 = env::read();
+    // Verify that neither of them are 1 (i.e. nontrivial factors)
+    if a == 1 || b == 1 {
+        panic!("Trivial factors")
     }
-
-    if !is_okay {
-        panic!();
-    }
-    let digest: Digest = sha::digest_u8_bytes(sentence.as_bytes());
-    env::commit(digest);
+    // Compute the product while being careful with integer overflow
+    let product = a.checked_mul(b).expect("Integer overflow");
+    env::commit(&product);
 }
