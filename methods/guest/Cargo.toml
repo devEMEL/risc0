@@ -1,5 +1,5 @@
 [package]
-name = "risc0_hello_methods"
+name = "methods"
 version = "0.1.0"
 edition = "2021"
 
